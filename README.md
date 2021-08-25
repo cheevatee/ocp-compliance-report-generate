@@ -29,6 +29,8 @@ ocp_compliance_report_path=/root/compliance/compliance-report
 scan_results_path=./scan-results
 ```
 
+Note: ocp_compliance_report_path is the path where all ocp-compliance-report-generate scripts are placed
+
 Run the script compliance-report-create.sh to generate compliance report. Will deploy pod compliance-report and provide a route for access compliance report each node. 
 
 ```
