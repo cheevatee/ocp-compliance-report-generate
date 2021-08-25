@@ -23,7 +23,7 @@ Setup variables below in compliance-report-create.sh
 ```
 oc_cmd=/usr/bin/oc
 ocp_cluster_id=cluster-kp9vq
-ocp_base_domain=kp9vq.sandbox1891.opentlc.com
+ocp_base_domain=kp9vq.sandbox1891.labtest.com
 ocp_compliance_project=openshift-compliance
 ocp_compliance_report_path=/root/compliance/compliance-report
 scan_results_path=./scan-results
@@ -50,6 +50,8 @@ compliance-report   compliance-report-openshift-compliance.apps.<cluster-id>.<ba
 
 Setup crontab for generate compliance report.
 
+Example: Run crontab generate compliance report every 10 mins
+
 ```
-*/5 * * * * /usr/bin/bash /root/compliance/compliance-report/compliance-report-generate.sh
+*/10 * * * * /usr/bin/bash /root/compliance/compliance-report/compliance-report-generate.sh
 ```
