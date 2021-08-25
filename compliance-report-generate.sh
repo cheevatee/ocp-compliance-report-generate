@@ -1,18 +1,17 @@
-
 oc_cmd=/usr/bin/oc
 ocp_cluster_id=cluster-kp9vq
 ocp_base_domain=kp9vq.sandbox1891.opentlc.com
 ocp_resource_name=compliance-report
 ocp_compliance_project=openshift-compliance
-ocp_compliance_result_extract_path=/root/compliance/compliance-report
+ocp_compliance_report_path=/root/compliance/compliance-report
 ocp_compliancesuites_worker_currentIndex=$($oc_cmd get compliancesuites -o=jsonpath="{.items[*]['status.scanStatuses'][0].currentIndex}")
 ocp_compliancesuites_master_currentIndex=$($oc_cmd get compliancesuites -o=jsonpath="{.items[*]['status.scanStatuses'][1].currentIndex}")
 ocp_compliancesuites_cis_currentIndex=$($oc_cmd get compliancesuites -o=jsonpath="{.items[*]['status.scanStatuses'][2].currentIndex}")
 scan_results_path=./scan-results
 
 
-cd $ocp_compliance_result_extract_path
-echo "###### $ocp_compliance_result_extract_path ######"
+cd $ocp_compliance_report_path
+echo "###### $ocp_compliance_report_path ######"
 
 for i in deployment is bc svc route
 do
@@ -21,9 +20,9 @@ done
 
 /usr/bin/rm -rf *.html
 
-$oc_cmd create -f $ocp_compliance_result_extract_path/compliance-raw-master-result-extract.yaml
-$oc_cmd create -f $ocp_compliance_result_extract_path/compliance-raw-worker-result-extract.yaml
-$oc_cmd create -f $ocp_compliance_result_extract_path/compliance-raw-cis-result-extract.yaml
+$oc_cmd create -f $ocp_compliance_report_path/compliance-raw-master-result-extract.yaml
+$oc_cmd create -f $ocp_compliance_report_path/compliance-raw-worker-result-extract.yaml
+$oc_cmd create -f $ocp_compliance_report_path/compliance-raw-cis-result-extract.yaml
 #sleep 120
 sleep 60
 
@@ -40,9 +39,9 @@ done
 
 $oc_cmd cp cis-compliance-extract:/cis-scan-results/$ocp_compliancesuites_cis_currentIndex/ocp4-cis-api-checks-pod.xml.bzip2 ./scan-results/cis-report/ocp4-cis-api-checks-pod-$(date +"%Y%m%d%H%M").xml.bzip2
 
-$oc_cmd delete -f $ocp_compliance_result_extract_path/compliance-raw-worker-result-extract.yaml
-$oc_cmd delete -f $ocp_compliance_result_extract_path/compliance-raw-master-result-extract.yaml
-$oc_cmd delete -f $ocp_compliance_result_extract_path/compliance-raw-cis-result-extract.yaml
+$oc_cmd delete -f $ocp_compliance_report_path/compliance-raw-worker-result-extract.yaml
+$oc_cmd delete -f $ocp_compliance_report_path/compliance-raw-master-result-extract.yaml
+$oc_cmd delete -f $ocp_compliance_report_path/compliance-raw-cis-result-extract.yaml
 
 for i in $($oc_cmd get no|/usr/bin/grep -v NAME|/usr/bin/awk -F. '{print $1}')
 do
@@ -58,7 +57,7 @@ oc get no|grep -v NAME|awk -F. '{print $1}'|xargs -i echo "{}: <a href=\"https:/
 
 
 $oc_cmd new-build --name compliance-report --binary
-$oc_cmd start-build compliance-report --from-dir=$ocp_compliance_result_extract_path/ --follow --wait
+$oc_cmd start-build compliance-report --from-dir=$ocp_compliance_report_path/ --follow --wait
 $oc_cmd new-app compliance-report
 $oc_cmd create route edge --service=compliance-report
 $oc_cmd get route compliance-report
