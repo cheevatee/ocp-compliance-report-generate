@@ -24,7 +24,6 @@ Setup variables below in compliance-report-create.sh
 oc_cmd=/usr/bin/oc
 ocp_cluster_id=cluster-kp9vq
 ocp_base_domain=kp9vq.sandbox1891.opentlc.com
-ocp_resource_name=compliance-report
 ocp_compliance_project=openshift-compliance
 ocp_compliance_report_path=/root/compliance/compliance-report
 scan_results_path=./scan-results
