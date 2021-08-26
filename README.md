@@ -6,6 +6,7 @@ Install the Compliance Operator through the web console.
 https://docs.openshift.com/container-platform/4.8/security/compliance_operator/compliance-operator-installation.html#installing-compliance-operator-web-console_compliance-operator-installation
 
 Configure compliance scans.
+
 https://docs.openshift.com/container-platform/4.8/security/compliance_operator/compliance-scans.html
 
 On helper node. Install OpenSCAP packages.
